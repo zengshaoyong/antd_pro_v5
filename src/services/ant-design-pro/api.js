@@ -10,7 +10,7 @@ import request from '../request';
  * @returns
  */
 export async function currentUser(options) {
-  return request('/api/currentUser', {
+  return request('http://127.0.0.1:5000/currentUser', {
     method: 'GET',
     ...(options || {}),
   });
@@ -29,7 +29,7 @@ export async function menu(options) {
 }
 
 export async function testData(params, options) {
-  return request('/api/test', {
+  return request('http://127.0.0.1:5000/', {
     method: 'GET',
     params: { ...params },
     ...(options || {}),
@@ -46,7 +46,7 @@ export async function outLogin(options) {
 /** 登录接口 POST /api/login/account */
 
 export async function login(body, options) {
-  return request('/api/login/account', {
+  return request('http://127.0.0.1:5000/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

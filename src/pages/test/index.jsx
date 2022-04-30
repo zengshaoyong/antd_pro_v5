@@ -8,25 +8,40 @@ import { testData } from '@/services/ant-design-pro/api';
 export default () => {
   const [counter, setCounter] = useState(0);
   // const { data } = useRequest(testData);
-  const fun1 = useRequest(testData, {
+  // const fun1 = useRequest(testData, {
+  //   manual: true,
+  //   onSuccess: (data, params, refresh) => {
+  //     // message.success(`The username was changed to "${params[0]}" !`);
+  //     // console.log('params', params);
+  //     console.log('data', data);
+  //     console.log('params', params);
+  //     // setCounter(result);
+  //   },
+  //   onError: (error) => {
+  //     message.error(error.message);
+  //   },
+  // });
+
+  // const fun2 = useRequest(testData, {
+  //   manual: true,
+  //   onSuccess: (result, params) => {
+  //     // message.success(`The username was changed to "${params[0]}" !`);
+  //     console.log('params', params);
+  //     console.log('result', result);
+  //   },
+  //   onError: (error) => {
+  //     message.error(error.message);
+  //   },
+  // });
+
+  const { run, data, refresh, params, loading } = useRequest(testData, {
     manual: true,
-    onSuccess: (result, params) => {
+    onSuccess: () => {
       // message.success(`The username was changed to "${params[0]}" !`);
       // console.log('params', params);
-      // console.log('result', result);
-      console.log('成功了');
-    },
-    onError: (error) => {
-      message.error(error.message);
-    },
-  });
-
-  const fun2 = useRequest(testData, {
-    manual: true,
-    onSuccess: (result, params) => {
-      // message.success(`The username was changed to "${params[0]}" !`);
+      console.log('data', data);
       console.log('params', params);
-      console.log('result', result);
+      // setCounter(result);
     },
     onError: (error) => {
       message.error(error.message);
@@ -69,8 +84,10 @@ export default () => {
         <p>{counter}</p>
       </div>
 
-      <Button onClick={() => fun1.run('123')}>点击</Button>
-      <Button onClick={() => fun2.run('456')}>点击</Button>
+      <Button loading={loading} onClick={() => run({ username: 'zsy' })}>
+        点击
+      </Button>
+      <Button onClick={() => refresh()}>点击</Button>
       <Button onClick={updateData}>点击</Button>
     </div>
   );

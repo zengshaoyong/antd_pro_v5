@@ -35,6 +35,8 @@ const Login = () => {
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
 
+    console.log('userInfo', userInfo);
+
     if (userInfo) {
       const menuData = await initialState?.fetchMenu();
 
@@ -47,12 +49,13 @@ const Login = () => {
       // 登录
       const msg = await login({ ...values, type });
 
-      if (msg.status === 'ok') {
+      if (msg.status === 'AuthenticationOk') {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
         message.success(defaultLoginSuccessMessage);
+
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
@@ -78,29 +81,10 @@ const Login = () => {
   const { status, type: loginType } = userLoginState;
   return (
     <div className={styles.container}>
-      <div className={styles.lang} data-lang>
-        {/* {SelectLang && <SelectLang />} */}
-      </div>
       <div className={styles.content}>
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={intl.formatMessage({
-            id: 'pages.layouts.userLayout.title',
-          })}
-          initialValues={{
-            autoLogin: true,
-          }}
-          actions={[
-            <FormattedMessage
-              key="loginWith"
-              id="pages.login.loginWith"
-              defaultMessage="其他登录方式"
-            />,
-            <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.icon} />,
-            <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.icon} />,
-            <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
-          ]}
+          title="运维CMDB系统"
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
@@ -119,6 +103,7 @@ const Login = () => {
                 id: 'pages.login.phoneLogin.tab',
                 defaultMessage: '手机号登录',
               })}
+              disabled
             />
           </Tabs>
 
@@ -133,15 +118,11 @@ const Login = () => {
           {type === 'account' && (
             <>
               <ProFormText
-                name="username"
+                name="userName"
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
-                })}
                 rules={[
                   {
                     required: true,
@@ -155,15 +136,11 @@ const Login = () => {
                 ]}
               />
               <ProFormText.Password
-                name="password"
+                name="passWord"
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.password.placeholder',
-                  defaultMessage: '密码: ant.design',
-                })}
                 rules={[
                   {
                     required: true,
@@ -264,22 +241,6 @@ const Login = () => {
               />
             </>
           )}
-          <div
-            style={{
-              marginBottom: 24,
-            }}
-          >
-            <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
-            </ProFormCheckbox>
-            <a
-              style={{
-                float: 'right',
-              }}
-            >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-            </a>
-          </div>
         </LoginForm>
       </div>
       <Footer />
